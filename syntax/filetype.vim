@@ -4,20 +4,8 @@
 
 augroup filetypedetect
 
-
-
-
-
-" If filetypes.vim already exists, just copy the following lines
-" to your filetypes.vim file
-
 " Promela
-au BufNewFile,BufRead *.prom,*.prm,*.promela		setf promela
-
-
-
-
-
+au BufNewFile,BufRead *.prom,*.prm,*.promela,*.pml		setf promela
 
 augroup END
 
