@@ -36,6 +36,14 @@ syn keyword	promRepeat		do od
 syn keyword	promType		bool bit byte short int
 syn keyword	promType		chan mtype
 
+" my hack
+syn keyword	promStatement	else unless
+syn keyword	promFunction	D_proctype provided active priority
+syn keyword	promOperator	full nfull enabled eval eval pc_value empty n_empty
+syn keyword	promType	unsigned hidden xr xs typedef
+" special lables
+syn match	promFlags	"\(end\|progress\|accept\)[a-zA-Z0-9_]*:"
+" end my hack
 
 " Adding matches for special strings in comments
 syn keyword	promTodo	contained TODO FIXME XXX BUG
