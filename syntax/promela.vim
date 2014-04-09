@@ -27,27 +27,34 @@ syntax case match
 
 
 " Some usefull Promela keywords
-syn keyword	promStatement		goto break never skip timeout of
-syn keyword	promStatement		atomic d_step
-syn keyword	promOperator		len printf run
-syn keyword	promFunction		proctype init
 syn keyword	promConditional		if fi assert
-syn keyword	promRepeat		do od
+
+syn keyword	promFunction		proctype init
+syn keyword	promFunction		D_proctype provided active priority
+
+syn keyword	promOperator		len printf run
+syn keyword	promOperator		full nfull enabled eval pc_value empty n_empty
+
+syn keyword	promRepeat		do od for
+
+syn keyword	promStatement		atomic d_step
+syn keyword	promStatement		goto break never skip timeout of
+syn keyword	promStatement		else unless
+
 syn keyword	promType		bool bit byte short int
 syn keyword	promType		chan mtype
+syn keyword	promType		unsigned hidden xr xs typedef
 
-" my hack
-syn keyword	promStatement	else unless
-syn keyword	promFunction	D_proctype provided active priority
-syn keyword	promOperator	full nfull enabled eval eval pc_value empty n_empty
-syn keyword	promType	unsigned hidden xr xs typedef
-" special lables
+syn keyword	promStorageClass	inline
+
+
+" special goto lables
 syn match	promFlags	"\(end\|progress\|accept\)[a-zA-Z0-9_]*:"
-" end my hack
+
 
 " Adding matches for special strings in comments
 syn keyword	promTodo	contained TODO FIXME XXX BUG
-syn cluster	cCommentGroup	contains=cTodo
+" syn cluster	cCommentGroup	contains=cTodo
 
 
 " Some special character strings used
@@ -67,10 +74,10 @@ syn region	promString	start=+"+ skip=+\\"+ end=+"+ contains=promFormat
 
 
 " For C-like comments (comments cannot be nested)
-syn region	promComment	start="/\*" end="\*/" contains=promTodo
-syn match	promCommentError	"\*/"
-syn sync 	ccomment promComment 	minlines=30
-syn region	promComment	start="//" skip="\\$" end="$" keepend contains=promTodo
+syn region	promComment	    start="/\*" end="\*/" contains=promTodo
+syn match	promCommentError    "\*/"
+syn sync 	ccomment	    promComment	    minlines=30
+syn region	promComment	    start="//" skip="\\$" end="$" keepend contains=promTodo
 
 
 " Initialize useful constants
@@ -79,6 +86,18 @@ syn keyword	promConstant	true false TRUE FALSE
 
 " Define derivitive (very C-like)
 syn region	promDefine	start="^\s*#\s*\(define\)\>" skip="\\$" end="$" end="//"me=s-1
+
+
+" Define includes
+syn region	promIncluded	display contained start=+"+ skip=+\\\\\|\\"+ end=+"+
+syn match	promIncluded	display contained "<[^>]*>"
+syn match	promInclude	display "^\s*\(%:\|#\)\s*include\>\s*["<]" contains=promIncluded
+
+
+" Define conditional preprocessor
+syn region	promPreCondit	start="^\s*\(%:\|#\)\s*\(if\|ifdef\|ifndef\|elif\)\>" skip="\\$" end="$" keepend contains=promComment,promString,promNumber,promConstant
+syn match	promPreCondit	display "^\s*\(%:\|#\)\s*\(else\|endif\)\>"
+
 
 
 " Define the default highlighting.
@@ -107,10 +126,14 @@ if version >= 508 || !exists("did_c_syn_inits")
 	HiLink promType			Type
 	HiLink promConstant		Constant
 	HiLink promString		String
+	HiLink promInclude		Include
+	HiLink promIncluded		String
 	HiLink promComment		Comment
 	HiLink promSpecial		SpecialChar
 	HiLink promTodo			Todo
-	delcommand HiLink
+	HiLink promStorageClass		StorageClass
+	HiLink promPreCondit		PreCondit
+ 	delcommand HiLink
 endif
 
 let b:current_syntax = "promela"
