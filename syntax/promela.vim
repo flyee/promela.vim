@@ -70,7 +70,7 @@ syn region	promString	start=+"+ skip=+\\"+ end=+"+ contains=promFormat
 syn region	promComment	start="/\*" end="\*/" contains=promTodo
 syn match	promCommentError	"\*/"
 syn sync 	ccomment promComment 	minlines=30
-syn region	promCommentL	start="//" skip="\\$" end="$" keepend contains=promTodo
+syn region	promComment	start="//" skip="\\$" end="$" keepend contains=promTodo
 
 
 " Initialize useful constants
